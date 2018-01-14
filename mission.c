@@ -10,7 +10,7 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad
 USB descriptors to allow for the creation of custom controllers for the
 Nintendo Switch. This also works to a limited degree on the PS3.
 
-Since System Update v3.50, the Nintendo Switch recognizes the Pokken
+Since System Update v3.0.0, the Nintendo Switch recognizes the Pokken
 Tournament Pro Pad as a Pro Controller. Physical design limitations prevent
 the Pokken Controller from functioning at the same level as the Pro
 Controller. However, by default most of the descriptors are there, with the
@@ -181,6 +181,22 @@ BUTTON_MAP_t prepare[] = {
     {BUTTON_B,    5000},
     {BUTTON_A,    1000},
     {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
+    {BUTTON_A,    1000},
+    {BUTTON_B,    5000},
 };
 
 BUTTON_MAP_t mission1[] = {
@@ -237,7 +253,7 @@ int wait_time = 50;
 
 uint8_t ports_val = 0;
 
-uint8_t mission_posion = 0;
+uint8_t mission_postion = 0;
 
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
@@ -285,7 +301,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       mapPos++;
       if (mapPos >= (sizeof(prepare) / sizeof(BUTTON_MAP_t))) {
         state = MISSION_1;
-        mission_posion = 0;
+        mission_postion = 0;
         mapPos = 0;
       }
       break;
@@ -334,12 +350,12 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       wait_time = chooseBlade[mapPos].wait_time;
 
       mapPos++;
-      mission_posion++;
       if (mapPos >= (sizeof(chooseBlade) / sizeof(BUTTON_MAP_t))) {
         state = WAITING;
-        if (mission_posion % 3 == 1) {
+        mission_postion++;
+        if (mission_postion % 3 == 1) {
           state = MISSION_2;
-        } else if (mission_posion % 3 == 1) {
+        } else if (mission_postion % 3 == 2) {
           state = MISSION_3;
         }
         mapPos = 0;

@@ -10,7 +10,7 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad
 USB descriptors to allow for the creation of custom controllers for the
 Nintendo Switch. This also works to a limited degree on the PS3.
 
-Since System Update v3.50, the Nintendo Switch recognizes the Pokken
+Since System Update v3.0.0, the Nintendo Switch recognizes the Pokken
 Tournament Pro Pad as a Pro Controller. Physical design limitations prevent
 the Pokken Controller from functioning at the same level as the Pro
 Controller. However, by default most of the descriptors are there, with the
