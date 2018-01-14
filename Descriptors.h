@@ -2,6 +2,21 @@
 #define _DESCRIPTORS_H_
 
 // Includes
+#ifdef WRITING_CODE_IN_IDE
+    #include <Config/LUFAConfig.h>
+    #include <LUFA/Drivers/USB/Class/Common/HIDClassCommon.h>
+
+    #include <LUFA/Drivers/USB/Core/AVR8/Device_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/Host_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/OTG_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/Pipe_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/PipeStream_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h>
+    #include <LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.h>
+#endif
+
 #include <LUFA/Drivers/USB/USB.h>
 
 #include <avr/pgmspace.h>

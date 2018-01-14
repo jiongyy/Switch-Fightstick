@@ -29,27 +29,29 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-include_directories(/usr/local/Cellar/avr-gcc/7.2.0/avr/include)
-include_directories(./LUFA)
+add_definitions(-DALERT_WHEN_DONE)
+add_definitions(-DWRITING_CODE_IN_IDE)
+add_definitions(-D__AVR_ATmega328P__)
+add_definitions(-DUSB_CAN_BE_DEVICE)
+add_definitions(-DUSE_STATIC_OPTIONS)
+#add_definitions(-DFIXED_CONTROL_ENDPOINT_SIZE)
+#link_libraries(Config/LUFAConfig.h)
+#add_library(LUFA)
+
+include_directories(./avr/include)
+include_directories(./)
 
 add_executable(switchFightstick
-        LUFA/Build/lufa_core.mk
-        LUFA/Build/lufa_sources.mk
-        LUFA/Build/lufa_build.mk
-        LUFA/Build/lufa_cppcheck.mk
-        LUFA/Build/lufa_doxygen.mk
-        LUFA/Build/lufa_dfu.mk
-        LUFA/Build/lufa_hid.mk
-        LUFA/Build/lufa_avrdude.mk
-        LUFA/Build/lufa_atprogram.mk
+        LUFA
         Config/LUFAConfig.h
-        Descriptors.c
         Descriptors.h
         Joystick.h
+        Descriptors.c
 
         Joystick.c
         eatMeat.c
         mission.c
+        missionAll.c
         openCard.c
         aaa.c
         printImage.c
@@ -61,4 +63,8 @@ add_executable(switchFightstick
         makefile
         install.sh
 
-        HORI_Descriptors)
+        HORI_Descriptors
+        lcd1602.c
+        lcd1602.h
+        action.h
+        action.c)

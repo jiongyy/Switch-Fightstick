@@ -25,6 +25,10 @@ these buttons for our use.
  */
 
 #include "Joystick.h"
+#include "action.h"
+#ifndef ALERT_WHEN_DONE
+#define ALERT_WHEN_DONE
+#endif
 
 // Main entry point.
 int main(void) {
@@ -140,59 +144,69 @@ typedef enum {
 } State_t;
 State_t state = SYNC_CONTROLLER;
 
-#define ECHOES 2
-int echoes = 0;
-USB_JoystickReport_Input_t last_report;
+BUTTON_MAP_t map[] = {
+        {BUTTON_A, 50, 200}
+};
 
 int report_count = 0;
 
+bool holding = true;
+bool waiting = false;
+int hold_time = 50;
+int wait_time = 50;
+uint8_t ports_val = 0;
 int mapPos = 0;
-
-int waitJump = 20;
 
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
 
-    // Prepare an empty report
-    memset(ReportData, 0, sizeof(USB_JoystickReport_Input_t));
-    ReportData->LX = STICK_CENTER;
-    ReportData->LY = STICK_CENTER;
-    ReportData->RX = STICK_CENTER;
-    ReportData->RY = STICK_CENTER;
-    ReportData->HAT = HAT_CENTER;
+    setButton(ReportData, BUTTON_RESET);
 
-    // Repeat ECHOES times the last report
-    if (echoes > 0) {
-        memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
-        echoes--;
-        return;
+    if (holding && hold_time) {
+        #ifdef ALERT_WHEN_DONE
+        PORTD = ports_val;
+        PORTB = ports_val;
+        #endif
+        delay(hold_time);
+        holding = false;
+        waiting = true;
+    } else if (waiting && wait_time) {
+        #ifdef ALERT_WHEN_DONE
+        PORTD = ~ports_val;
+        PORTB = ~ports_val;
+        #endif
+        delay(wait_time);
+        waiting = false;
+    } else {
+        // region do something
+        switch (state) {
+            case SYNC_CONTROLLER:
+                if (report_count > 100) {
+                    report_count = 0;
+                    state = DOING;
+                } else if (report_count == 25 || report_count == 50) {
+                    setButton(ReportData, BUTTON_L);
+                    setButton(ReportData, BUTTON_R);
+                } else if (report_count == 75 || report_count == 100) {
+                    setButton(ReportData, BUTTON_A);
+                }
+                report_count++;
+                wait_time = 0;
+                break;
+            case DOING:
+                setButton(ReportData, map[mapPos].action);
+                hold_time = map[mapPos].hold_time;
+                wait_time = map[mapPos].wait_time;
+
+                mapPos++;
+                if (mapPos >= (sizeof(map) / sizeof(BUTTON_MAP_t))) {
+                    //state = DOING;
+                    mapPos = 0;
+                }
+                break;
+        }
+        // endregion
+        if (!hold_time) hold_time=50;
+        holding = true;
     }
-
-    // States and moves management
-    switch (state) {
-        case SYNC_CONTROLLER:
-            if (report_count > 100) {
-                report_count = 0;
-                state = DOING;
-            } else if (report_count == 25 || report_count == 50) {
-                ReportData->Button |= SWITCH_L | SWITCH_R;
-            } else if (report_count == 75 || report_count == 100) {
-                ReportData->Button |= SWITCH_A;
-            }
-            report_count++;
-            break;
-        case DOING:
-            if (waitJump > 0) {
-                waitJump--;
-            } else {
-                waitJump = 20;
-                ReportData->Button = SWITCH_A;
-            }
-            break;
-    }
-
-    // Prepare to echo this report
-    memcpy(&last_report, ReportData, sizeof(USB_JoystickReport_Input_t));
-    echoes = ECHOES;
-
 }

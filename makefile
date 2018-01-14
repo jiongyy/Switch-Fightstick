@@ -20,7 +20,7 @@ OPTIMIZATION = s
 ifndef TARGET
 TARGET = Joystick
 endif
-SRC          = $(FILE) Descriptors.c image.c $(LUFA_SRC_USB)
+SRC          = $(FILE) Descriptors.c image.c action.c $(LUFA_SRC_USB)
 LUFA_PATH    = ./LUFA
 CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -IConfig/
 LD_FLAGS     =

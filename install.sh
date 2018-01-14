@@ -5,26 +5,26 @@ target=$2
 
 if [ -z "$file" ]
 then
-  file="FILE=Joystick.c"
+  file="Joystick.c"
 else
-  file="FILE=$file"
+  file="$file"
 fi
 
 if [ -z "$target" ]
 then
-  target="TARGET=Joystick"
+  target="Joystick"
 else
-  target="TARGET=$target"
+  target="$target"
 fi
 
-#echo "make ${file} ${target} #with-alert"
-make ${file} ${target} #with-alert
+echo "make FILE=${file} TARGET=${target} #with-alert"
+make FILE=${file} TARGET=${target} #with-alert
 echo ""
 echo ""
 dfu-programmer atmega16u2 erase
 echo ""
 echo ""
-dfu-programmer atmega16u2 flash $1.hex
+dfu-programmer atmega16u2 flash ${target}.hex
 echo ""
 echo ""
 dfu-programmer atmega16u2 reset

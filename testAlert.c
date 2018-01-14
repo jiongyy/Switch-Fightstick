@@ -24,10 +24,10 @@ these buttons for our use.
  *  the demo and is responsible for the initial application hardware configuration.
  */
 
-#include "Joystick.h"
-#include <time.h>
+#include <stdio.h>
+#include <util/atomic.h>
 
-#define ALERT_WHEN_DONE 1
+#include "Joystick.h"
 
 // Main entry point.
 int main(void) {
@@ -54,16 +54,13 @@ void SetupHardware(void) {
     clock_prescale_set(clock_div_1);
     // We can then initialize our hardware and peripherals, including the USB stack.
 
-#ifdef ALERT_WHEN_DONE
     // Both PORTD and PORTB will be used for the optional LED flashing and buzzer.
-#warning LED and Buzzer functionality enabled. All pins on both PORTB and \
-PORTD will toggle when printing is done.
-    DDRD  = 0xFF; //Teensy uses PORTD
-    PORTD =  0x0;
-                  //We'll just flash all pins on both ports since the UNO R3
-    DDRB  = 0xFF; //uses PORTB. Micro can use either or, but both give us 2 LEDs
-    PORTB =  0x0; //The ATmega328P on the UNO will be resetting, so unplug it?
-#endif
+////warning LED and Buzzer functionality enabled. All pins on both PORTB and PORTD will toggle when printing is done.
+    DDRD = 0xFF; //Teensy uses PORTD
+    PORTD = 0x0;
+    //We'll just flash all pins on both ports since the UNO R3
+    DDRB = 0xFF; //uses PORTB. Micro can use either or, but both give us 2 LEDs
+    PORTB = 0x0; //The ATmega328P on the UNO will be resetting, so unplug it?
     // The USB stack should be initialized last.
     USB_Init();
 }
@@ -139,8 +136,8 @@ void HID_Task(void) {
 
 USB_JoystickReport_Input_t last_report;
 
-int portsval = 0;
-time_t time1;
+uint8_t ports_val = PORT0;
+//time_t time1;
 
 typedef enum {
     SYNC_CONTROLLER,
@@ -148,24 +145,53 @@ typedef enum {
 } State_t;
 State_t state = SYNC_CONTROLLER;
 
+volatile unsigned long timer1_millis;
+long milliseconds_since;
+
+ISR (TIMER1_COMPA_vect) {
+    timer1_millis++;
+}
+
+unsigned long millis() {
+    unsigned long millis_return;
+
+    // Ensure this cannot be disrupted
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
+        millis_return = timer1_millis;
+    }
+
+    return millis_return;
+}
+
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
-
+    unsigned long milliseconds_current = millis();
     // States and moves management
     switch (state) {
         case SYNC_CONTROLLER:
-            time(&time1);
+            milliseconds_since = millis();
             state = SYNC_POSITION;
             break;
         case SYNC_POSITION:
-            #ifdef ALERT_WHEN_DONE
-            if (abs(difftime(time1, time(NULL))) > 10) {
-                time(&time1);
-                portsval = ~portsval;
-                PORTD = portsval; //flash LED(s) and sound buzzer if attached
-                PORTB = portsval;
+            /*
+            if (milliseconds_current - milliseconds_since > 1000) {
+                // LED connected to PC0/Analog 0
+                //if (!ports_val) ports_val = 1;
+                //ports_val = (ports_val << 1);
+                ports_val = ~ports_val;
+                PORTB = ports_val;
+                PORTD = ports_val;
+                milliseconds_since = milliseconds_current;
             }
-            #endif
+            */
+            //ports_val++;
+            //if (ports_val > PORTD7) {
+            //    ports_val = PORTD0;
+            //}
+            ports_val = ~ports_val;
+            PORTB = ports_val;
+            PORTD = ports_val;
+            _delay_ms(1000);
             break;
     }
 

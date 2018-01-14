@@ -9,5 +9,6 @@
 *.sym
 *.eep
 LUFA/
+avr/
 .idea/
 cmake-build-debug/

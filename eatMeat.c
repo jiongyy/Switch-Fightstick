@@ -155,7 +155,7 @@ USB_JoystickReport_Input_t last_report;
 
 int report_count = 0;
 
-int bladeNum = 36;
+int bladeNum = 62;
 int bladePos = 0;
 int line = 0;
 int row = 0;
@@ -388,10 +388,10 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
                 if (mapPos >= MAP_LEN_CON) {
                     mapPos = 0;
                     state = PREPARE;
-                }
-                if (bladePos >= bladeNum) {
-                    state = DONE;
-                    break;
+                    if (bladePos >= bladeNum) {
+                        state = DONE;
+                        break;
+                    }
                 }
                 break;
             case DONE:
