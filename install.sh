@@ -17,8 +17,8 @@ else
   target="$target"
 fi
 
-echo "make FILE=${file} TARGET=${target} #with-alert"
-make FILE=${file} TARGET=${target} #with-alert
+echo "make FILE=${file} TARGET=${target}#with-alter "
+make FILE=${file} TARGET=${target} | grep -v avr-gcc
 echo ""
 echo ""
 dfu-programmer atmega16u2 erase
@@ -28,8 +28,6 @@ dfu-programmer atmega16u2 flash ${target}.hex
 echo ""
 echo ""
 dfu-programmer atmega16u2 reset
-echo ""
-echo ""
 echo "delete build files"
 rm -f *.d *.o *.bin *.elf *.hex *.lss *.map *.sym *.eep
 rm -rf obj

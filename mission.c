@@ -153,50 +153,74 @@ State_t state = SYNC_CONTROLLER;
 // region maps
 
 BUTTON_MAP_t prepare[] = {
-    {BUTTON_B,    1000}, // 不配置
-    {BUTTON_B,    1000}, // 不配置
-    {BUTTON_B,    1000}, // 不配置
-    {BUTTON_B,    1000}, // 不配置
-    // 打开界面 进入佣兵团
+    {BUTTON_B,    1000},
+    {BUTTON_B,    1000},
+    {BUTTON_B,    1000},
+    {BUTTON_B,    1500},
+
     {BUTTON_PLUS, 1500},
     {PAD_RIGHT,   50},
     {PAD_RIGHT,   50},
     {PAD_RIGHT,   50},
     {PAD_RIGHT,   50},
+    {BUTTON_A,    10000}, // 进入佣兵团
+
+    {BUTTON_A,    1000}, // 确认任务1
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 1
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 2
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 3
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 4
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 5
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 6
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 7
+    {BUTTON_B,    3500},
     {BUTTON_A,    1000},
-    // 完成界面
+    {BUTTON_B,    10000},
+
+    {BUTTON_A,    1000}, // 确认任务2
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 1
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 2
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 3
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 4
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 5
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 6
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 7
+    {BUTTON_B,    3500},
     {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
+    {BUTTON_B,    10000},
+
+    {BUTTON_A,    1000}, // 确认任务3
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 1
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 2
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 3
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 4
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 5
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 6
+    {BUTTON_B,    3500},
+    {BUTTON_A,    1000}, // 7
+    {BUTTON_B,    3500},
     {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    5000},
+    {BUTTON_B,    3500},
 };
 
 BUTTON_MAP_t mission1[] = {
@@ -237,12 +261,13 @@ BUTTON_MAP_t startMission[] = {
     {BUTTON_A, 500},
     {PAD_TOP,  100},
     {BUTTON_A, 15000}, // 语音
-    {BUTTON_A, 5000}, // 任务3 开始
+    {BUTTON_A, 5000},
 };
 // endregion
 
 int report_count = 0;
 int mapPos = 0;
+int mission_time = 30;
 
 bool holding = true;
 bool waiting = false;
@@ -253,7 +278,7 @@ int wait_time = 50;
 
 uint8_t ports_val = 0;
 
-uint8_t mission_postion = 0;
+uint8_t mission_position = 0;
 
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
@@ -301,7 +326,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       mapPos++;
       if (mapPos >= (sizeof(prepare) / sizeof(BUTTON_MAP_t))) {
         state = MISSION_1;
-        mission_postion = 0;
+        mission_position = 0;
         mapPos = 0;
       }
       break;
@@ -346,29 +371,40 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       }
       break;
     case START_MISSION:
-      setButton(ReportData, chooseBlade[mapPos].action);
-      wait_time = chooseBlade[mapPos].wait_time;
+      setButton(ReportData, startMission[mapPos].action);
+      wait_time = startMission[mapPos].wait_time;
 
       mapPos++;
-      if (mapPos >= (sizeof(chooseBlade) / sizeof(BUTTON_MAP_t))) {
+      if (mapPos >= (sizeof(startMission) / sizeof(BUTTON_MAP_t))) {
         state = WAITING;
-        mission_postion++;
-        if (mission_postion % 3 == 1) {
+        mission_time = 30;
+        mapPos = 0;
+        mission_position++;
+        if (mission_position % 3 == 1) {
           state = MISSION_2;
-        } else if (mission_postion % 3 == 2) {
+        } else if (mission_position % 3 == 2) {
           state = MISSION_3;
         }
-        mapPos = 0;
       }
       break;
     case WAITING:
-      mapPos = 30;
-      while (mapPos) {
+      while (mission_time) {
         _delay_ms(60000);
-        mapPos--;
+        mission_time--;
       }
+      mission_time = 0;
       mapPos = 0;
       state = PREPARE;
+      //if (mission_time > 0) {
+      //  _delay_ms(60000);
+      //  mission_time--;
+      //  setButton(ReportData, BUTTON_B);
+      //  hold_time = 50;
+      //  wait_time = 0;
+      //} else {
+      //  mission_time = 0;
+      //  state = PREPARE;
+      //}
       break;
     }
     // endregion

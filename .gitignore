@@ -12,3 +12,5 @@ LUFA/
 avr/
 .idea/
 cmake-build-debug/
+Arduino/
+CMakeLists.txt
