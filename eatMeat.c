@@ -369,7 +369,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       setButton(ReportData, BUTTON_A);
       wait_time = 200;
       mapPos++;
-      if (mapPos > 350) {
+      if (mapPos > 300) {
         mapPos = 0;
         state = CONFIRM_BLADE;
       }
