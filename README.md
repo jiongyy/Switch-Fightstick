@@ -16,3 +16,5 @@ toSS 自动买东西喂到 ss，要把人物调到第一个，绑定好异刃，
 aaa 连发 A
 
 mission 自动佣兵任务，从下面的异刃开始，把人放到商会就可以
+
+其他还有指定异刃用七冰任务快速刷的 missionAll ，自动采集的 openPoint，乌贼画图的 printImage (shinyquagsire23 大佬的)
