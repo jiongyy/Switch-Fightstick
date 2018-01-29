@@ -368,9 +368,8 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
     case EATING:
       setButton(ReportData, BUTTON_A);
       wait_time = 200;
-      report_count++;
-      if (report_count > 300) {
-        report_count = 0;
+      mapPos++;
+      if (mapPos > 350) {
         mapPos = 0;
         state = CONFIRM_BLADE;
       }
