@@ -26,7 +26,7 @@ these buttons for our use.
 
 #include "Joystick.h"
 #include "action.h"
-#include <Arduino/hardware/arduino/avr/cores/arduino/Arduino.h>
+//#include <Arduino/hardware/arduino/avr/cores/arduino/Arduino.h>
 #ifndef ALERT_WHEN_DONE
 #define ALERT_WHEN_DONE
 #endif
@@ -160,7 +160,7 @@ BUTTON_MAP_t prepare[] = {
     {BUTTON_B, 1000},
     {BUTTON_B, 1000},
     {BUTTON_B, 1000},
-    {BUTTON_B, 1500},
+    {BUTTON_B, 2000},
 };
 
 BUTTON_MAP_t buy[] = {
@@ -168,19 +168,19 @@ BUTTON_MAP_t buy[] = {
     {BUTTON_A,   500}, // 对话
     {BUTTON_A,   1000}, // 购买
     // 第一项
-    {BUTTON_A,   300},
-    {PAD_LEFT,   300},
-    {BUTTON_A,   300},
+    {BUTTON_A,   100},
+    {PAD_LEFT,   50},
+    {BUTTON_A,   500},
     // 第二项
-    {PAD_BOTTOM, 300},
-    {BUTTON_A,   300},
-    {PAD_LEFT,   300},
-    {BUTTON_A,   300},
+    {PAD_BOTTOM, 50},
+    {BUTTON_A,   100},
+    {PAD_LEFT,   50},
+    {BUTTON_A,   500},
     // 第三项
-    {PAD_BOTTOM, 300},
-    {BUTTON_A,   300},
-    {PAD_LEFT,   300},
-    {BUTTON_A,   300},
+    {PAD_BOTTOM, 50},
+    {BUTTON_A,   100},
+    {PAD_LEFT,   50},
+    {BUTTON_A,   500},
     //退出
     {BUTTON_B,   1000},
     {BUTTON_B,   1000},
@@ -209,8 +209,15 @@ BUTTON_MAP_t eatPre[] = {
 BUTTON_MAP_t confirm[] = {
     {BUTTON_B,    500},
     {BUTTON_B,    500},
-    {BUTTON_PLUS, 1500},
-    {BUTTON_PLUS, 1500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    500},
+    {BUTTON_B,    2000},
+    {BUTTON_PLUS, 2000},
     {BUTTON_A,    1000},
     {PAD_RIGHT,   500},
     {BUTTON_A,    1000},
@@ -230,7 +237,7 @@ int report_count = 0;
 int mapPos = 0;
 
 int bladeNum = 26;
-int bladePos = 0;
+int bladePos = 3;
 int line = 0;
 int row = 0;
 
@@ -362,7 +369,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       setButton(ReportData, BUTTON_A);
       wait_time = 200;
       report_count++;
-      if (report_count > 200) {
+      if (report_count > 300) {
         report_count = 0;
         mapPos = 0;
         state = CONFIRM_BLADE;

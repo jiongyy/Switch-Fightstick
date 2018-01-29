@@ -150,79 +150,44 @@ State_t state = SYNC_CONTROLLER;
 // region maps
 
 BUTTON_MAP_t prepareMap[] = {
-    {BUTTON_B,    100}, // 不配置
-    {BUTTON_B,    100}, // 不配置
-    {BUTTON_B,    100}, // 不配置
-    {BUTTON_B,    1000}, // 不配置
+    {BUTTON_B,    1000},
+    {BUTTON_B,    1000},
+    {BUTTON_B,    1000},
+    {BUTTON_B,    1500},
 
     {BUTTON_PLUS, 1500}, // 打开界面
     {PAD_RIGHT,   50},
     {PAD_RIGHT,   50},
     {PAD_RIGHT,   50},
     {PAD_RIGHT,   50},
-    {BUTTON_A,    10000}, // 进入佣兵团
+    {BUTTON_A,    1000}, // 进入佣兵团
+
 
     {BUTTON_A,    1000}, // 确认任务1
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 1
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 2
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 3
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 4
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 5
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 6
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000}, // 7
-    {BUTTON_B,    3500},
+    {BUTTON_B,    2000},
     {BUTTON_A,    1000},
-    {BUTTON_B,    10000},
-
-
-    {BUTTON_A,    1000}, // 确认任务2
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 1
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 2
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 3
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 4
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 5
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 6
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 7
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    10000},
-
-
-    {BUTTON_A,    1000}, // 确认任务3
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 1
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 2
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 3
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 4
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 5
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 6
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000}, // 7
-    {BUTTON_B,    3500},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    3500},
+    {BUTTON_B,    1000},
 };
 BUTTON_MAP_t chooseMap[] = {
     {BUTTON_A,   500}, // 进入商会
+    {PAD_RIGHT,  50},
+    {PAD_RIGHT,  50},
+    {PAD_RIGHT,  50},
+    {PAD_BOTTOM, 50},
     {BUTTON_A,   1000}, // 任务1
 
     {PAD_BOTTOM, 50},
@@ -230,77 +195,36 @@ BUTTON_MAP_t chooseMap[] = {
     {PAD_RIGHT,  50},
     {PAD_RIGHT,  50},
     {PAD_RIGHT,  50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50}, // 纽兹
+    {BUTTON_A,   50}, // 七冰
     {PAD_BOTTOM, 50},
     {PAD_BOTTOM, 50},
-    {PAD_LEFT,   50},
-    {BUTTON_A,   50}, // 国王
-    {PAD_LEFT,   50},
-    {PAD_LEFT,   50},
-    {BUTTON_A,   50}, // 莹
+    {PAD_RIGHT,  50},
+    {BUTTON_A,   50}, // 月
     {PAD_BOTTOM, 50},
     {PAD_LEFT,   50},
-    {BUTTON_A,   50},  // 路人
+    {BUTTON_A,   50}, // 路人暗
+    {PAD_BOTTOM, 50},
+    {PAD_LEFT,   50},
+    {PAD_LEFT,   50},
+    {PAD_LEFT,   50},
+    {BUTTON_A,   50},  // 路人暗
+    {PAD_BOTTOM, 50},
+    {PAD_BOTTOM, 50},
+    {PAD_BOTTOM, 50},
+    {PAD_BOTTOM, 50},
     {PAD_RIGHT,  50},
-    {BUTTON_A,   50},  // 路人
     {PAD_RIGHT,  50},
-    {BUTTON_A,   50},  // 路人
+    {PAD_RIGHT,  50},
+    {BUTTON_A,   50},  // 路人暗
+    {PAD_BOTTOM, 50},
+    {BUTTON_A,   50},  // 路人暗
 
     {BUTTON_X,   1000},
     {BUTTON_A,   500},
     {PAD_TOP,    100},
-    {BUTTON_A,   15000}, // 语音
-    {BUTTON_A,   1500}, // 任务1 开始
-
-
-    {BUTTON_A,   500}, // 进入商会
-    {PAD_BOTTOM, 100},
-    {BUTTON_A,   1000}, // 任务2
-
-    {PAD_TOP,    50},
-    {BUTTON_A,   50},
-    {PAD_TOP,    50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-
-    {BUTTON_X,   1000},
-    {BUTTON_A,   500},
-    {PAD_TOP,    100},
-    {BUTTON_A,   15000}, // 语音
-    {BUTTON_A,   1500}, // 任务2 开始
-
-
-    {PAD_RIGHT,  100},
-    {PAD_RIGHT,  100},
-    {BUTTON_A,   500}, // 进入商会
-    {BUTTON_A,   1000}, // 任务3
-
-    {PAD_TOP,    50},
-    {BUTTON_A,   50},
-    {PAD_TOP,    50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-    {PAD_RIGHT,  50},
-    {BUTTON_A,   50},
-
-    {BUTTON_X,   1000},
-    {BUTTON_A,   500},
-    {PAD_TOP,    100},
-    {BUTTON_A,   15000}, // 语音
-    {BUTTON_A,   1500}, // 任务3 开始
+    {BUTTON_A,   300}, // 语音
+    {BUTTON_A,   4000}, // 语音
+    {BUTTON_A,   500}, // 任务1 开始
 };
 
 BUTTON_MAP_t startMissionMap[] = {
@@ -386,7 +310,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       mapPos++;
       if (mapPos >= (sizeof(startMissionMap) / sizeof(BUTTON_MAP_t))) {
         state = WAITING;
-        mission_time = 30;
+        mission_time = 7;
         mapPos = 0;
       }
       break;

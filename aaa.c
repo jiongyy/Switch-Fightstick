@@ -145,7 +145,7 @@ typedef enum {
 State_t state = SYNC_CONTROLLER;
 
 BUTTON_MAP_t map[] = {
-        {BUTTON_A, 50, 200}
+        {BUTTON_A, 50}
 };
 
 int report_count = 0;
@@ -195,7 +195,6 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
                 break;
             case DOING:
                 setButton(ReportData, map[mapPos].action);
-                hold_time = map[mapPos].hold_time;
                 wait_time = map[mapPos].wait_time;
 
                 mapPos++;

@@ -35,7 +35,7 @@ void setButton(USB_JoystickReport_Input_t *const ReportData, ACTION_t action) {
             ReportData->HAT = HAT_LEFT;
             break;
         case PAD_RIGHT:
-            ReportData->HAT = HAT_TOP_RIGHT;
+            ReportData->HAT = HAT_RIGHT;
             break;
         case BUTTON_A:
             ReportData->Button |= SWITCH_A;

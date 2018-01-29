@@ -148,35 +148,40 @@ State_t state = SYNC_CONTROLLER;
 // region maps
 
 BUTTON_MAP_t prepare[] = {
-    {BUTTON_B,    50}, // 不配置
-    {BUTTON_B,    50}, // 不配置
-    {BUTTON_B,    50}, // 不配置
-    {BUTTON_B,    50}, // 不配置
-    {BUTTON_B,    50}, // 不配置
-    {BUTTON_B,    1000}, // 不配置
-    {BUTTON_PLUS, 1500}, // 界面
-    {PAD_RIGHT,   50}, // 选异刃管理
-    {PAD_RIGHT,   50}, // 选异刃管理
-    {PAD_RIGHT,   50}, // 选异刃管理
+    {BUTTON_B,    2000},
+    {BUTTON_PLUS, 1500},
+    {PAD_RIGHT,   50},
+    {PAD_RIGHT,   50},
+    {PAD_RIGHT,   50},   // 选异刃管理
     {BUTTON_A,    1000}, // 进入
-    {PAD_RIGHT,   50}, // 选抽卡
-    {BUTTON_A,    1000}, // 进入
-    {PAD_RIGHT,   50}, // 选尼亚
+    {PAD_RIGHT,   50},   // 选抽卡
+    {BUTTON_A,    3000}, // 进入
 };
 
 BUTTON_MAP_t openCard[] = {
-    {BUTTON_A,    500}, // 选人
-    {BUTTON_A,    500}, // 选水晶
-    {PAD_TOP,     50}, // 选不使用
-    {PAD_TOP,     50}, // 选正义
-    {BUTTON_A,    500}, // 1个
-    {BUTTON_A,    2000}, // 1个
-    {PAD_TOP,     50}, // 选是
-    {BUTTON_A,    10000}, // 确定
-    {BUTTON_PLUS, 500}, // 确定
-    {BUTTON_A,    1000}, // 确定
-    {BUTTON_A,    500}, // 确认
-    {BUTTON_B,    3000}, // 不配置
+    // 自动换人
+    {PAD_RIGHT,   500},
+    {BUTTON_A,    1000},
+
+    // 使用最下面的水晶
+    {PAD_TOP,     500},
+    {BUTTON_A,    1000},
+
+    // 使用最下面的增幅器
+    {PAD_TOP,     50},
+    {PAD_TOP,     50},
+    {BUTTON_A,    500},
+    {BUTTON_A,    2000},
+
+    // 存档
+    {PAD_TOP,     50},
+    {BUTTON_A,    20000},
+
+    // 跳过
+    {BUTTON_PLUS, 500},
+    {BUTTON_A,    2000},
+    {BUTTON_A,    500},
+    {BUTTON_B,    3000},
 };
 
 // endregion

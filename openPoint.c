@@ -26,9 +26,6 @@ these buttons for our use.
 
 #include "Joystick.h"
 #include "action.h"
-#ifndef ALERT_WHEN_DONE
-#define ALERT_WHEN_DONE
-#endif
 
 // Main entry point.
 int main(void) {
@@ -140,146 +137,35 @@ void HID_Task(void) {
 
 typedef enum {
   SYNC_CONTROLLER,
-  PREPARE,
-  MISSION_1,
-  MISSION_2,
-  MISSION_3,
-  CHOOSE_BLADE,
-  START_MISSION,
-  WAITING
+  SEND,
+  RUN,
+  OPEN,
 } State_t;
 State_t state = SYNC_CONTROLLER;
 
-// region maps
-
-BUTTON_MAP_t prepare[] = {
-    {BUTTON_B,    1000},
-    {BUTTON_B,    1000},
-    {BUTTON_B,    1000},
-    {BUTTON_B,    1500},
-
-    {BUTTON_PLUS, 1500},
-    {PAD_RIGHT,   50},
-    {PAD_RIGHT,   50},
-    {PAD_RIGHT,   50},
-    {PAD_RIGHT,   50},
-    {BUTTON_A,    1000}, // 进入佣兵团
-
-    {BUTTON_A,    1000}, // 确认任务1
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 1
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 2
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 3
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 4
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 5
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 6
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 7
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    2000},
-
-    {BUTTON_A,    1000}, // 确认任务2
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 1
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 2
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 3
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 4
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 5
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 6
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 7
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    2000},
-
-    {BUTTON_A,    1000}, // 确认任务3
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 1
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 2
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 3
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 4
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 5
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 6
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000}, // 7
-    {BUTTON_B,    2000},
-    {BUTTON_A,    1000},
-    {BUTTON_B,    2000},
-};
-
-BUTTON_MAP_t mission1[] = {
-    {BUTTON_A, 500}, // 进入商会
-    {BUTTON_A, 1000}, // 任务1
-};
-
-BUTTON_MAP_t mission2[] = {
-    {BUTTON_A,   500}, // 进入商会
-    {PAD_BOTTOM, 100},
-    {BUTTON_A,   1000}, // 任务2
-};
-
-BUTTON_MAP_t mission3[] = {
-    {PAD_RIGHT, 100},
-    {PAD_RIGHT, 100},
-    {BUTTON_A,  500}, // 进入商会
-    {BUTTON_A,  1000}, // 任务3
-};
-
-BUTTON_MAP_t chooseBlade[] = {
-    {PAD_TOP,   50},
-    {BUTTON_A,  50},
-    {PAD_TOP,   50},
-    {BUTTON_A,  50},
-    {PAD_RIGHT, 50},
-    {BUTTON_A,  50},
-    {PAD_RIGHT, 50},
-    {BUTTON_A,  50},
-    {PAD_RIGHT, 50},
-    {BUTTON_A,  50},
-    {PAD_RIGHT, 50},
-    {BUTTON_A,  50},
-};
-
-BUTTON_MAP_t startMission[] = {
-    {BUTTON_X, 1000},
+BUTTON_MAP_t send[] = {
+    {BUTTON_X, 2000},
     {BUTTON_A, 500},
-    {PAD_TOP,  100},
-    {BUTTON_A, 1000}, // 跳过语音
-    {BUTTON_A, 3000}, // 语音
-    {BUTTON_A, 2000},
+    {BUTTON_A, 500},
+    {BUTTON_A, 500},
+    {BUTTON_A, 500},
+    {BUTTON_A, 5000},
 };
-// endregion
+
+BUTTON_MAP_t run[] = {
+    {L_STICK_TOP,   5000},
+    {L_STICK_RIGHT, 300},
+    {L_STICK_TOP,   6300}
+};
 
 int report_count = 0;
-int mapPos = 0;
-int mission_time = 30;
 
 bool holding = true;
 bool waiting = false;
-
-#define DEFAULT_HOLD_TIME 50
-int hold_time = DEFAULT_HOLD_TIME;
+int hold_time = 50;
 int wait_time = 50;
-
 uint8_t ports_val = 0;
-
-uint8_t mission_position = 0;
+int mapPos = 0;
 
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
@@ -307,9 +193,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
     case SYNC_CONTROLLER:
       if (report_count > 100) {
         report_count = 0;
-        wait_time = 500;
-        mapPos = 0;
-        state = PREPARE;
+        state = SEND;
       } else if (report_count == 25 || report_count == 50) {
         setButton(ReportData, BUTTON_L);
         setButton(ReportData, BUTTON_R);
@@ -318,93 +202,38 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData) {
       }
       report_count++;
       wait_time = 0;
-      //hold_time = 50;
       break;
-    case PREPARE:
-      setButton(ReportData, prepare[mapPos].action);
-      wait_time = prepare[mapPos].wait_time;
+    case SEND:
+      setButton(ReportData, send[mapPos].action);
+      wait_time = send[mapPos].wait_time;
 
       mapPos++;
-      if (mapPos >= (sizeof(prepare) / sizeof(BUTTON_MAP_t))) {
-        state = MISSION_1;
-        mission_position = 0;
+      if (mapPos >= (sizeof(send) / sizeof(BUTTON_MAP_t))) {
+        state = RUN;
         mapPos = 0;
       }
       break;
-    case MISSION_1:
-      setButton(ReportData, mission1[mapPos].action);
-      wait_time = mission1[mapPos].wait_time;
+    case RUN:
+      setButton(ReportData, run[mapPos].action);
+      hold_time = run[mapPos].wait_time;
+      wait_time = 0;
 
       mapPos++;
-      if (mapPos >= (sizeof(mission1) / sizeof(BUTTON_MAP_t))) {
-        state = CHOOSE_BLADE;
+      if (mapPos >= (sizeof(run) / sizeof(BUTTON_MAP_t))) {
+        state = OPEN;
+        wait_time = 1000;
         mapPos = 0;
       }
       break;
-    case MISSION_2:
-      setButton(ReportData, mission2[mapPos].action);
-      wait_time = mission2[mapPos].wait_time;
+    case OPEN:
+      setButton(ReportData, BUTTON_A);
+      hold_time = 80;
+      wait_time = 11000;
 
-      mapPos++;
-      if (mapPos >= (sizeof(mission2) / sizeof(BUTTON_MAP_t))) {
-        state = CHOOSE_BLADE;
-        mapPos = 0;
-      }
-      break;
-    case MISSION_3:
-      setButton(ReportData, mission3[mapPos].action);
-      wait_time = mission3[mapPos].wait_time;
-
-      mapPos++;
-      if (mapPos >= (sizeof(mission3) / sizeof(BUTTON_MAP_t))) {
-        state = CHOOSE_BLADE;
-        mapPos = 0;
-      }
-      break;
-    case CHOOSE_BLADE:
-      setButton(ReportData, chooseBlade[mapPos].action);
-      wait_time = chooseBlade[mapPos].wait_time;
-
-      mapPos++;
-      if (mapPos >= (sizeof(chooseBlade) / sizeof(BUTTON_MAP_t))) {
-        state = START_MISSION;
-        mapPos = 0;
-      }
-      break;
-    case START_MISSION:
-      setButton(ReportData, startMission[mapPos].action);
-      wait_time = startMission[mapPos].wait_time;
-
-      mapPos++;
-      if (mapPos >= (sizeof(startMission) / sizeof(BUTTON_MAP_t))) {
-        state = WAITING;
-        mission_time = 30;
-        mapPos = 0;
-        mission_position++;
-        if (mission_position % 3 == 1) {
-          state = MISSION_2;
-        } else if (mission_position % 3 == 2) {
-          state = MISSION_3;
-        }
-      }
-      break;
-    case WAITING:
-      while (mission_time) {
-        _delay_ms(60000);
-        mission_time--;
-      }
-      mission_time = 0;
+      //mapPos++;
+      //if (mapPos >= 350) { // 差不多10次吃一个
+      state = SEND;
       mapPos = 0;
-      state = PREPARE;
-      //if (mission_time > 0) {
-      //  _delay_ms(60000);
-      //  mission_time--;
-      //  setButton(ReportData, BUTTON_B);
-      //  hold_time = 50;
-      //  wait_time = 0;
-      //} else {
-      //  mission_time = 0;
-      //  state = PREPARE;
       //}
       break;
     }
