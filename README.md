@@ -1,11 +1,16 @@
-This is a fork of progmem/Switch-Fightstick & shinyquagsire23/Switch-Fightstick
+This is a fork of progmem/Switch-Fightstick & shinyquagsire23/Switch-Fightstick & clcy1243/Switch-Fightstick
 
 
-使用环境：```avr-gcc``` ```dfu-programmer```
+Windows使用环境要求：
+MinGW
+arduino
+atmel flip
+乌贼画图需要用到python 2.7
+修改代码可以用npp，代码比对可以用DiffMerge
 
 ```LUFA``` 要自己下载，目录自己写一下，地址 https://github.com/abcminiuser/lufa
 
-install.sh 是一个安装脚本，自动编译安装，第一个参数是文件名，只接受一个，第二个参数是项目名，默认 Joystick
+
 
 openCard 抽卡
 
@@ -17,4 +22,8 @@ aaa 连发 A
 
 mission 自动佣兵任务，从下面的异刃开始，把人放到商会就可以
 
-其他还有指定异刃用七冰任务快速刷的 missionAll ，自动采集的 openPoint，乌贼画图的 printImage (shinyquagsire23 大佬的)
+missionAll 指定异刃用七冰任务快速刷的
+
+openPoint 自动采集的
+
+printImage 乌贼画图的
