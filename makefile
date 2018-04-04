@@ -18,10 +18,10 @@ F_CPU        = 16000000
 F_USB        = $(F_CPU)
 OPTIMIZATION = s
 ifndef TARGET
-TARGET = Joystick
+TARGET = toSS
 endif
-SRC          = $(FILE) Descriptors.c image.c action.c $(LUFA_SRC_USB)
-LUFA_PATH    = ./LUFA
+SRC          = $(TARGET).c Descriptors.c image.c action.c $(LUFA_SRC_USB)
+LUFA_PATH    = ./LUFA/LUFA
 CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -IConfig/
 LD_FLAGS     =
 
