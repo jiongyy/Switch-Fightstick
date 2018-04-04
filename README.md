@@ -1,16 +1,20 @@
 This is a fork of progmem/Switch-Fightstick & shinyquagsire23/Switch-Fightstick & clcy1243/Switch-Fightstick
 
+Windows使用环境要求；
 
-Windows使用环境要求：
-MinGW
-arduino
-atmel flip
+MinGW （c & c++）
+
+arduino （arduino驱动）
+
+atmel flip（写入.hex文件）
+
 乌贼画图需要用到python 2.7
+
 修改代码可以用npp，代码比对可以用DiffMerge
 
-```LUFA``` 要自己下载，目录自己写一下，地址 https://github.com/abcminiuser/lufa
+ps：Windows 10 x64 测试可以正常编译，写入arduino
 
-
+LUFA 要自己下载，目录自己写一下，地址 https://github.com/abcminiuser/lufa
 
 openCard 抽卡
 
